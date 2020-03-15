@@ -1,0 +1,12 @@
+Feature: Validating place API's'
+
+Scenario Outline: Verify if place is being successfully added using Googl Add Place API
+Given Add Place payload with "<name>" "<language>" "<address>"
+When user calls "AddPlaceAPI" with "post" http request
+Then the API call got success with status code 200
+And validate the "status" response as "OK"
+
+Examples:
+	|name      |language|address	|
+	|EnumSwarantej |EnumTelugu  |EnumHyderabad  |
+	|EnumVuppu	   |EnumHindi   |EnumJalandhar  |

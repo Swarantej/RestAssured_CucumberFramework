@@ -1,0 +1,16 @@
+package resources;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class ExcelData {
+
+	public static void main(String[] args) throws FileNotFoundException {
+		// TODO Auto-generated method stub
+		FileInputStream fis = new FileInputStream("C:\\Users\\Swaran\\Desktop\\testdata.xlsx");
+		XSSFWorkbook workbook = new XSSFWorkbook(fis);
+	}
+
+}

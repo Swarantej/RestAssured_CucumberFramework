@@ -1,0 +1,100 @@
+package stepDefinitions;
+
+import static io.restassured.RestAssured.given;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+
+import java.io.IOException;
+
+/*import static io.restassured.RestAssured.given;*/
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.cucumber.java.PendingException;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+import io.restassured.specification.ResponseSpecification;
+import pojo.Location;
+import pojo.SerializePostGoogleAddPlace;
+import resources.APIResources;
+import resources.TestData;
+import resources.Utils;
+
+
+public class StepDefinition extends Utils {
+	RequestSpecification req;
+	 ResponseSpecification response;
+	 Response res;
+	 TestData data = new TestData();
+
+	 
+	 
+	 @Given("Add Place payload with {string} {string} {string}")
+	 public void add_Place_payload_with(String name, String language, String address) throws IOException {
+	     // Write code here that turns the phrase above into concrete actions
+		 
+		//Builing Response Spec Builder
+		  response = new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
+		
+
+		//Seperating Request seperately from Reponse
+		 req = given().spec(reqSpec())
+		.body(data.addPayLoad(name,language,address));
+		
+	    
+	   
+	 }
+	 
+	 
+	 
+	 
+	
+
+
+@When("user calls {string} with {string} http request")
+public void user_calls_with_http_request(String apiResource, String httpMethod) throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+		 
+		 //Calling ENUM Classes constructor and using valueOf Method we will call the methods		 
+		APIResources addAPIRes =  APIResources.valueOf(apiResource);
+		System.out.println(addAPIRes.getResource());
+		
+		if(httpMethod.equalsIgnoreCase("POST")) {
+			res = req.when()
+					.post(addAPIRes.getResource());
+		}else if(httpMethod.equalsIgnoreCase("Get")) {
+			res = req.when()
+					.post(addAPIRes.getResource());
+		}
+		
+	  
+	}
+
+	@Then("^the API call got success with status code (\\d+)$")
+	public void the_API_call_got_success_with_status_code(int arg1) throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+		assertEquals(res.getStatusCode(), 200);
+		
+
+	}
+
+	@Then("^validate the \"([^\"]*)\" response as \"([^\"]*)\"$")
+	public void validate_the_response_as(String arg1, String arg2) throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+		String status = res.asString();
+		JsonPath statusDesc = new JsonPath(status);
+		assertEquals(statusDesc.get(arg1).toString(),"OK");
+	   
+		
+	}
+
+}

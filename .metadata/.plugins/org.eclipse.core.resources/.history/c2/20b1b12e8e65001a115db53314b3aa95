@@ -1,0 +1,14 @@
+package resources;
+
+public enum APIResources {
+	AddPlaceAPI("/maps/api/place/add/json"),
+	getPlaceAPI("/maps/api/place/get/json"),
+	deletePlaceAPU("/maps/api/place/delete/json");
+	
+	//Creating constructore to invole methos
+	
+	APIResources(String ){
+		
+	}
+	
+}

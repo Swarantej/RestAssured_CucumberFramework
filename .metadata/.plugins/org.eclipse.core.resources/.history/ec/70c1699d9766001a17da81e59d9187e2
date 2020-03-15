@@ -1,0 +1,8 @@
+package reusable;
+
+public class Payload {
+
+	public static String payload() {
+		return "";
+	}
+}

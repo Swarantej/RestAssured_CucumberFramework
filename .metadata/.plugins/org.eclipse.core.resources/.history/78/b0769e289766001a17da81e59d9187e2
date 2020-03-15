@@ -1,0 +1,9 @@
+package testcases;
+
+import io.restassured.path.json.JsonPath;
+
+public class ComplexJSONParse {
+	
+	JsonPath js = new JsonPath();
+
+}

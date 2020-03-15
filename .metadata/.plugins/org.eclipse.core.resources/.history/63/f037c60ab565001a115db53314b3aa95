@@ -1,0 +1,115 @@
+package stepDefinitions;
+
+import static io.restassured.RestAssured.given;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+
+import java.io.IOException;
+
+/*import static io.restassured.RestAssured.given;*/
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.cucumber.java.PendingException;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+import io.restassured.specification.ResponseSpecification;
+import pojo.Location;
+import pojo.SerializePostGoogleAddPlace;
+import resources.APIResources;
+import resources.TestData;
+import resources.Utils;
+
+
+public class StepDefinition extends Utils {
+	RequestSpecification req;
+	 ResponseSpecification response;
+	 Response res;
+	 TestData data = new TestData();
+	 
+	 static String place_id;
+
+	 
+	 
+	 @Given("Add Place payload with {string} {string} {string}")
+	 public void add_Place_payload_with(String name, String language, String address) throws IOException {
+	     // Write code here that turns the phrase above into concrete actions
+		 
+		//Builing Response Spec Builder
+		  response = new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
+		
+
+		//Seperating Request seperately from Reponse
+		 req = given().spec(reqSpec())
+		.body(data.addPayLoad(name,language,address));
+		   
+	 }
+	 
+	 
+@When("user calls {string} with {string} http request")
+public void user_calls_with_http_request(String apiResource, String httpMethod) throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+		 
+		 //Calling ENUM Classes constructor and using valueOf Method we will call the methods		 
+	APIResources APIRes =  APIResources.valueOf(apiResource);
+		System.out.println(APIRes.getResource());
+		
+		if(httpMethod.equalsIgnoreCase("post")) {
+			res = req.when()
+					.post(APIRes.getResource());
+			//Need to Check, for get we are using .post() still it is working
+		}else if(httpMethod.equalsIgnoreCase("get")) {
+			res = req.when()
+					.post(APIRes.getResource());
+		}
+		
+	  
+	}
+
+	@Then("^the API call got success with status code (\\d+)$")
+	public void the_API_call_got_success_with_status_code(int statusCode) throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+		assertEquals(res.getStatusCode(), 200);
+		
+
+	}
+
+	@Then("^validate the \"([^\"]*)\" response as \"([^\"]*)\"$")
+	public void validate_the_response_as(String keyValue, String expectedValue) throws Throwable {
+	    // Write code here that turns the phrase above into concrete actions
+		assertEquals(getJsonResponse(res,keyValue),expectedValue);	
+	}
+	
+	@Then("verify the placeId created with {string} using {string}")
+	public void verify_the_placeId_created_with_using(String expectedName, String apiMethod) throws Throwable {
+	  
+		 place_id= getJsonResponse(res,"place_id");
+		req = given().spec(reqSpec()).queryParam("place_id", place_id);
+		user_calls_with_http_request(apiMethod,"get");
+		String actualName = getJsonResponse(res,"name");
+		assertEquals(actualName,expectedName);		
+		
+	}	
+	
+	//Delete API Test
+	
+	@Given("Delete Place payload")
+	public void delete_Place_payload() throws IOException {
+		
+		//We are now storing this payload req in request variable bcoz this will user in the post method
+	req= given().spec(reqSpec()).body(data.deletePayLoad(place_id));
+	    
+	}
+
+
+
+}

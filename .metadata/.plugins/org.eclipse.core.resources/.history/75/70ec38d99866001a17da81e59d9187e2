@@ -1,0 +1,10 @@
+package testcases;
+
+import io.restassured.path.json.JsonPath;
+import reusable.Payload;
+
+public class ComplexJSONParse {
+	
+	JsonPath js = new JsonPath(Payload.payload());
+
+}

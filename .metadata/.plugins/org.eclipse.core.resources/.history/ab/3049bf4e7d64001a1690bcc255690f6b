@@ -1,0 +1,27 @@
+package resources;
+
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+
+import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
+import io.restassured.http.ContentType;
+import io.restassured.specification.RequestSpecification;
+
+public class Utils {
+	RequestSpecification request;
+	public RequestSpecification reqSpec() {
+		RestAssured.baseURI = "https://rahulshettyacademy.com";
+		//Building Request Spec Builder
+		PrintStream logDetails = new PrintStream(new FileOutputStream("logFile.txt"));
+		 request = new RequestSpecBuilder().setBaseUri("https://rahulshettyacademy.com")
+				 	.addFilter(RequestLoggingFilter.logRequestTo(logDetails))
+				 	.addFilter(ResponseLoggingFilter.logResponseTo(logDetails))
+				 	.addQueryParam("key", "qaclick123").setContentType(ContentType.JSON).build();
+		 
+		 return request;
+	}
+
+}

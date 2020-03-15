@@ -1,0 +1,18 @@
+package restassured.jira.apitesting;
+
+import java.io.FileInputStream;
+import java.util.Properties;
+
+import org.testng.annotations.BeforeTest;
+
+
+public class JiraAPI {
+	Properties prop = new Properties();
+	@BeforeTest
+	
+	public void getData() {
+		FileInputStream fis = new FileInputStream("");
+		prop.load(fis);
+	}
+
+}

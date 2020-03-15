@@ -1,0 +1,39 @@
+package resources;
+
+import java.util.HashMap;
+
+import org.testng.annotations.Test;
+
+import files.PayLoad;
+import files.ReusableMethods;
+
+import static io.restassured.RestAssured.given;
+import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+
+@Test
+public class LibraryAPIExcel {
+	
+	public void addBook() {
+		HashMap<String,Object> map = new HashMap<String, Object>();
+		map.put("name", "RestAssured");
+		map.put("isbn", "gdfdg");
+		map.put("aisle", "322");
+		map.put("author", "Rahul");
+		RestAssured.baseURI="http://216.10.245.166";
+		Response res = given().
+			header("Content-Type","application/json")
+			.body(map)
+		.when().
+		post("/Library/Addbook.php")
+		.then().assertThat().statusCode(200)
+		.extract().response();
+		
+		/*
+		 * JsonPath json = ReusableMethods.rawJSONConversion(res); String bookID =
+		 * json.get("ID"); System.out.println(bookID); System.out.println(res);
+		 */
+	}
+
+}

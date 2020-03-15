@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 2 elements to &apos;APIFramework/src/main/java/pojo&apos;&#x0D;&#x0A;- Original project: &apos;RestAssured&apos;&#x0D;&#x0A;- Destination element: &apos;APIFramework/src/main/java/pojo&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     restassured.serialization.apitesting.SerializePostGoogleAddPlace.java&#x0D;&#x0A;     restassured.serialization.apitesting.Location.java" description="Copy compilation units" destination="=APIFramework/src\/main\/java&lt;pojo" element1="/src&lt;restassured.serialization.apitesting{SerializePostGoogleAddPlace.java" element2="/src&lt;restassured.serialization.apitesting{Location.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1583369380007" units="2" version="1.0"/>
+</session>
